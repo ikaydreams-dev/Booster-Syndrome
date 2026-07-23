@@ -166,7 +166,7 @@ MIT License - See LICENSE file for details
 
 ## Authors
 
-Built by @ikaydreams-dev (atovaness12@gmail.com)
+Built by @ikaydreams-dev (ikaydreams108@gmail.com)
 
 ---
 

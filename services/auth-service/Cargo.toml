@@ -2,7 +2,7 @@
 name = "auth-service"
 version = "1.0.0"
 edition = "2021"
-authors = ["atovaness12@gmail.com"]
+authors = ["ikaydreams108@gmail.com"]
 
 [dependencies]
 tokio = { version = "1.35", features = ["full"] }
