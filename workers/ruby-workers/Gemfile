@@ -1,0 +1,7 @@
+source 'https://rubygems.org'
+
+ruby '3.2.0'
+
+gem 'rufus-scheduler', '~> 3.9'
+gem 'redis', '~> 5.0'
+gem 'dotenv', '~> 2.8'
