@@ -1,0 +1,75 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: booster-services
+  namespace: production
+  labels:
+    team: platform
+spec:
+  selector:
+    matchLabels:
+      monitored: "true"
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: booster-alerts
+  namespace: production
+spec:
+  groups:
+  - name: service-alerts
+    interval: 30s
+    rules:
+    - alert: HighErrorRate
+      expr: |
+        rate(http_requests_total{status=~"5.."}[5m]) > 0.05
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High error rate detected"
+        description: "Service {{ $labels.service }} has error rate above 5%"
+
+    - alert: ServiceDown
+      expr: up{job="booster-services"} == 0
+      for: 2m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Service is down"
+        description: "{{ $labels.service }} has been down for more than 2 minutes"
+
+    - alert: HighLatency
+      expr: |
+        histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 1
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High latency detected"
+        description: "95th percentile latency is above 1s"
+
+    - alert: HighMemoryUsage
+      expr: |
+        container_memory_usage_bytes{pod=~".*-service-.*"} /
+        container_spec_memory_limit_bytes{pod=~".*-service-.*"} > 0.9
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High memory usage"
+        description: "Pod {{ $labels.pod }} is using more than 90% memory"
+
+    - alert: HighCPUUsage
+      expr: |
+        rate(container_cpu_usage_seconds_total{pod=~".*-service-.*"}[5m]) > 0.8
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High CPU usage"
+        description: "Pod {{ $labels.pod }} is using more than 80% CPU"
