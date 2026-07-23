@@ -1,0 +1,142 @@
+syntax = "proto3";
+
+package booster.events;
+
+option java_package = "com.booster.events";
+option java_outer_classname = "EventsProto";
+option go_package = "github.com/ikaydreams-dev/booster/proto/events";
+
+message Event {
+  string id = 1;
+  string user_id = 2;
+  string session_id = 3;
+  string event_type = 4;
+  string event_name = 5;
+  map<string, string> properties = 6;
+  string page_url = 7;
+  string referrer = 8;
+  string user_agent = 9;
+  string ip_address = 10;
+  string country = 11;
+  string city = 12;
+  DeviceType device_type = 13;
+  string browser = 14;
+  string os = 15;
+  int64 timestamp = 16;
+}
+
+enum DeviceType {
+  UNKNOWN = 0;
+  DESKTOP = 1;
+  MOBILE = 2;
+  TABLET = 3;
+}
+
+message TrackEventRequest {
+  string user_id = 1;
+  string event_type = 2;
+  string event_name = 3;
+  map<string, string> properties = 4;
+}
+
+message TrackEventResponse {
+  string event_id = 1;
+  int64 timestamp = 2;
+  bool success = 3;
+}
+
+message GetEventsRequest {
+  string user_id = 1;
+  string event_type = 2;
+  int64 start_timestamp = 3;
+  int64 end_timestamp = 4;
+  int32 limit = 5;
+  int32 offset = 6;
+}
+
+message GetEventsResponse {
+  repeated Event events = 1;
+  int32 total_count = 2;
+  bool has_more = 3;
+}
+
+message User {
+  string id = 1;
+  string email = 2;
+  string username = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string avatar_url = 6;
+  bool is_active = 7;
+  int64 created_at = 8;
+  int64 updated_at = 9;
+}
+
+message CreateUserRequest {
+  string email = 1;
+  string username = 2;
+  string password = 3;
+}
+
+message CreateUserResponse {
+  User user = 1;
+  bool success = 2;
+  string message = 3;
+}
+
+message Analytics {
+  int64 total_events = 1;
+  int32 unique_users = 2;
+  map<string, int32> events_by_type = 3;
+  repeated PageStats top_pages = 4;
+  DeviceBreakdown device_breakdown = 5;
+}
+
+message PageStats {
+  string url = 1;
+  int32 views = 2;
+  int32 unique_visitors = 3;
+}
+
+message DeviceBreakdown {
+  int32 desktop = 1;
+  int32 mobile = 2;
+  int32 tablet = 3;
+}
+
+service EventService {
+  rpc TrackEvent(TrackEventRequest) returns (TrackEventResponse);
+  rpc GetEvents(GetEventsRequest) returns (GetEventsResponse);
+  rpc GetAnalytics(GetAnalyticsRequest) returns (Analytics);
+  rpc StreamEvents(stream Event) returns (stream Event);
+}
+
+service UserService {
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  rpc GetUser(GetUserRequest) returns (User);
+  rpc UpdateUser(UpdateUserRequest) returns (User);
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
+}
+
+message GetAnalyticsRequest {
+  int64 start_timestamp = 1;
+  int64 end_timestamp = 2;
+}
+
+message GetUserRequest {
+  string user_id = 1;
+}
+
+message UpdateUserRequest {
+  string user_id = 1;
+  string first_name = 2;
+  string last_name = 3;
+}
+
+message DeleteUserRequest {
+  string user_id = 1;
+}
+
+message DeleteUserResponse {
+  bool success = 1;
+}

@@ -1,0 +1,157 @@
+type Query {
+  user(id: ID!): User
+  users(page: Int, limit: Int): UserConnection!
+  me: User
+  events(userId: ID, eventType: String, startDate: String, endDate: String): [Event!]!
+  analytics(startDate: String!, endDate: String!): Analytics!
+  funnel(steps: [String!]!): FunnelAnalysis!
+}
+
+type Mutation {
+  login(email: String!, password: String!): AuthPayload!
+  register(email: String!, username: String!, password: String!): AuthPayload!
+  logout: Boolean!
+  updateUser(id: ID!, input: UpdateUserInput!): User!
+  deleteUser(id: ID!): Boolean!
+  trackEvent(input: TrackEventInput!): Event!
+}
+
+type Subscription {
+  eventCreated(userId: ID): Event!
+  userStatusChanged(userId: ID!): UserStatus!
+}
+
+type User {
+  id: ID!
+  email: String!
+  username: String!
+  firstName: String
+  lastName: String
+  avatarUrl: String
+  isActive: Boolean!
+  createdAt: String!
+  updatedAt: String!
+  profile: UserProfile
+  events(limit: Int): [Event!]!
+}
+
+type UserProfile {
+  bio: String
+  phone: String
+  dateOfBirth: String
+  country: String
+  city: String
+  timezone: String
+  language: String
+}
+
+type UserConnection {
+  edges: [UserEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type UserEdge {
+  node: User!
+  cursor: String!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type AuthPayload {
+  token: String!
+  refreshToken: String!
+  user: User!
+}
+
+type Event {
+  id: ID!
+  userId: ID
+  sessionId: ID
+  eventType: String!
+  eventName: String!
+  properties: JSON
+  pageUrl: String
+  referrer: String
+  country: String
+  city: String
+  deviceType: String
+  browser: String
+  os: String
+  timestamp: String!
+}
+
+type Analytics {
+  totalEvents: Int!
+  uniqueUsers: Int!
+  eventsByType: [EventTypeCount!]!
+  topPages: [PageView!]!
+  deviceBreakdown: DeviceStats!
+  userGrowth: [GrowthData!]!
+}
+
+type EventTypeCount {
+  eventType: String!
+  count: Int!
+}
+
+type PageView {
+  url: String!
+  views: Int!
+  uniqueVisitors: Int!
+}
+
+type DeviceStats {
+  desktop: Int!
+  mobile: Int!
+  tablet: Int!
+}
+
+type GrowthData {
+  date: String!
+  users: Int!
+  events: Int!
+}
+
+type FunnelAnalysis {
+  steps: [FunnelStep!]!
+  overallConversion: Float!
+  dropOffPoints: [String!]!
+}
+
+type FunnelStep {
+  stepName: String!
+  count: Int!
+  conversionRate: Float!
+}
+
+type UserStatus {
+  userId: ID!
+  isOnline: Boolean!
+  lastSeen: String
+}
+
+input UpdateUserInput {
+  firstName: String
+  lastName: String
+  bio: String
+  phone: String
+  country: String
+  city: String
+}
+
+input TrackEventInput {
+  userId: ID
+  eventType: String!
+  eventName: String!
+  properties: JSON
+  pageUrl: String
+}
+
+scalar JSON
+scalar DateTime
