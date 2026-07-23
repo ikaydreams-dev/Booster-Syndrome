@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package analytics;
+
+option go_package = "github.com/ikaydreams-dev/booster-syndrome/shared/proto/analytics";
+
+service AnalyticsService {
+  rpc TrackEvent(EventRequest) returns (EventResponse);
+  rpc GetStats(StatsRequest) returns (StatsResponse);
+  rpc GetUserEvents(UserEventsRequest) returns (UserEventsResponse);
+}
+
+message EventRequest {
+  string user_id = 1;
+  string event_type = 2;
+  string event_name = 3;
+  map<string, string> properties = 4;
+}
+
+message EventResponse {
+  string id = 1;
+  string timestamp = 2;
+}
+
+message StatsRequest {
+  string start_date = 1;
+  string end_date = 2;
+}
+
+message StatsResponse {
+  int64 total_events = 1;
+  int64 unique_users = 2;
+  repeated DailyStat daily_stats = 3;
+}
+
+message DailyStat {
+  string date = 1;
+  int64 count = 2;
+}
+
+message UserEventsRequest {
+  string user_id = 1;
+  int32 limit = 2;
+}
+
+message UserEventsResponse {
+  repeated Event events = 1;
+}
+
+message Event {
+  string id = 1;
+  string event_type = 2;
+  string event_name = 3;
+  string timestamp = 4;
+}
