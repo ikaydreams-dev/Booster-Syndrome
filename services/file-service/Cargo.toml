@@ -1,0 +1,19 @@
+[package]
+name = "file-service"
+version = "1.0.0"
+edition = "2021"
+authors = ["ikaydreams108@gmail.com"]
+
+[dependencies]
+tokio = { version = "1.35", features = ["full"] }
+axum = "0.7"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tower-http = { version = "0.5", features = ["fs", "cors", "multipart"] }
+uuid = { version = "1.6", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+dotenv = "0.15"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+aws-sdk-s3 = "1.10"
+aws-config = "1.1"
