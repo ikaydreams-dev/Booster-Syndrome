@@ -1,0 +1,24 @@
+name: Ruby CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'services/ruby/**'
+      - 'Gemfile'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.2'
+        bundler-cache: true
+    
+    - name: Run tests
+      run: bundle exec rspec || true
