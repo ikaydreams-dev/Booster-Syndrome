@@ -2,185 +2,80 @@
 
 ## Prerequisites
 
-- Docker & Docker Compose
-- Kubernetes cluster (for production)
-- AWS account (optional, for cloud deployment)
-- Terraform (for infrastructure)
+- Docker and Docker Compose installed
+- PostgreSQL 15+
+- Redis 7+
+- MongoDB 7+
+- Node.js 18+
+- Ruby 3.2+
+- Python 3.11+
+- Go 1.21+
+- Rust 1.70+
+- Java 17+
 
 ## Local Development
 
-### Using Docker Compose
-
+1. Clone the repository
 ```bash
-# Install dependencies
-make install
-
-# Start all services
-docker-compose up -d
-
-# View logs
-docker-compose logs -f
-
-# Stop services
-docker-compose down
+git clone https://github.com/ikaydreams-dev/Booster-Syndrome.git
+cd Booster-Syndrome
 ```
 
-### Individual Services
-
-#### Auth Service (Rust)
+2. Run setup script
 ```bash
-cd services/auth-service
-cargo run
+./scripts/setup.sh
 ```
 
-#### User Service (TypeScript)
+3. Start infrastructure services
 ```bash
-cd services/user-service
-npm install
-npm run dev
+docker-compose -f docker-compose.dev.yml up -d
 ```
 
-#### Analytics Service (Python)
+4. Run migrations
 ```bash
-cd services/analytics-service
-pip install -r requirements.txt
-python -m uvicorn main:app --reload
+export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/booster_dev
+./scripts/db_migrate.sh
+```
+
+5. Seed database (optional)
+```bash
+./scripts/db_seed.sh
+```
+
+6. Run tests
+```bash
+./scripts/test.sh
 ```
 
 ## Production Deployment
 
-### Using Kubernetes
-
-1. Create namespace:
+1. Set environment variables
 ```bash
-kubectl apply -f infrastructure/kubernetes/namespace.yaml
+cp .env.production .env
+# Edit .env with production values
 ```
 
-2. Deploy services:
+2. Build Docker images
 ```bash
-kubectl apply -f infrastructure/kubernetes/deployment.yaml
+docker-compose build
 ```
 
-3. Verify deployment:
+3. Deploy services
 ```bash
-kubectl get pods -n booster-syndrome
-```
-
-### Using Terraform
-
-1. Initialize Terraform:
-```bash
-cd infrastructure/terraform
-terraform init
-```
-
-2. Plan deployment:
-```bash
-terraform plan
-```
-
-3. Apply changes:
-```bash
-terraform apply
-```
-
-### Using AWS ECS
-
-1. Build and push images:
-```bash
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <account-id>.dkr.ecr.us-east-1.amazonaws.com
-
-docker build -t booster/gateway services/gateway
-docker tag booster/gateway:latest <account-id>.dkr.ecr.us-east-1.amazonaws.com/booster/gateway:latest
-docker push <account-id>.dkr.ecr.us-east-1.amazonaws.com/booster/gateway:latest
-```
-
-2. Create ECS task definitions and services via AWS Console or CLI
-
-## Environment Variables
-
-### Required Variables
-
-```bash
-# Database
-DATABASE_URL=postgresql://user:pass@host:5432/db
-MONGODB_URI=mongodb://host:27017/db
-
-# Redis
-REDIS_URL=redis://host:6379
-
-# Secrets
-JWT_SECRET=your-secret-key
-
-# Services
-AUTH_SERVICE_URL=http://auth-service:8001
-USER_SERVICE_URL=http://user-service:8002
-```
-
-## Monitoring
-
-### Health Checks
-
-All services expose `/health` endpoint:
-```bash
-curl http://localhost:8000/health
-```
-
-### Logs
-
-View service logs:
-```bash
-# Docker Compose
-docker-compose logs -f service-name
-
-# Kubernetes
-kubectl logs -f deployment/gateway-deployment -n booster-syndrome
-```
-
-## Scaling
-
-### Horizontal Scaling
-
-```bash
-# Kubernetes
-kubectl scale deployment gateway-deployment --replicas=5 -n booster-syndrome
-
-# Docker Compose
-docker-compose up -d --scale gateway=3
-```
-
-## Rollback
-
-### Kubernetes
-
-```bash
-kubectl rollout undo deployment/gateway-deployment -n booster-syndrome
-```
-
-### Docker Compose
-
-```bash
-docker-compose down
-git checkout previous-version
 docker-compose up -d
 ```
 
-## Backup
-
-### Database Backups
-
+4. Run migrations
 ```bash
-# PostgreSQL
-pg_dump -h localhost -U postgres booster_db > backup.sql
-
-# MongoDB
-mongodump --uri="mongodb://localhost:27017/user_db" --out=backup/
+./scripts/db_migrate.sh
 ```
 
-## Security
+## CI/CD
 
-- Use secrets management (AWS Secrets Manager, Kubernetes Secrets)
-- Enable TLS/SSL for all services
-- Rotate credentials regularly
-- Use IAM roles for AWS resources
-- Enable firewall rules
+GitHub Actions workflows automatically:
+- Run tests on pull requests
+- Lint code
+- Build Docker images
+- Deploy to staging/production
+
+See `.github/workflows/` for details.
