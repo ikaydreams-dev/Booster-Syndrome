@@ -1,0 +1,57 @@
+development:
+  app_name: "Booster Syndrome"
+  base_url: "http://localhost:3000"
+  api_version: "v1"
+  
+  # Features
+  enable_cache: true
+  enable_rate_limit: false
+  enable_metrics: true
+  enable_logging: true
+  
+  # Authentication
+  jwt_expiration: 3600
+  session_timeout: 86400
+  max_login_attempts: 5
+  
+  # Pagination
+  default_page_size: 20
+  max_page_size: 100
+
+test:
+  app_name: "Booster Syndrome Test"
+  base_url: "http://localhost:3001"
+  api_version: "v1"
+  
+  enable_cache: false
+  enable_rate_limit: false
+  enable_metrics: false
+  enable_logging: false
+  
+  jwt_expiration: 300
+  session_timeout: 3600
+  max_login_attempts: 3
+  
+  default_page_size: 10
+  max_page_size: 50
+
+production:
+  app_name: "Booster Syndrome"
+  base_url: <%= ENV['APP_BASE_URL'] %>
+  api_version: "v1"
+  
+  enable_cache: true
+  enable_rate_limit: true
+  enable_metrics: true
+  enable_logging: true
+  
+  jwt_expiration: 3600
+  session_timeout: 86400
+  max_login_attempts: 5
+  
+  default_page_size: 20
+  max_page_size: 100
+  
+  # Rate limiting
+  rate_limit_max: 100
+  rate_limit_window: 900
