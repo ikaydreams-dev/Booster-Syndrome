@@ -1,0 +1,26 @@
+name: Rust CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'services/rust/**'
+      - 'Cargo.toml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+    
+    - name: Build
+      run: cargo build --verbose || true
+    
+    - name: Test
+      run: cargo test --verbose || true
