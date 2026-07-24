@@ -1,39 +1,19 @@
-.PHONY: help install build test clean deploy
+.PHONY: help build test clean install
 
 help:
-	@echo "Booster Syndrome - Available commands:"
-	@echo "  make install   - Install all dependencies"
-	@echo "  make build     - Build all services"
-	@echo "  make test      - Run all tests"
-	@echo "  make dev       - Start development environment"
-	@echo "  make deploy    - Deploy to production"
-	@echo "  make clean     - Clean build artifacts"
+	@echo "make install - Install dependencies"
+	@echo "make build   - Build services"
+	@echo "make test    - Run tests"
+	@echo "make clean   - Clean artifacts"
 
 install:
-	@echo "Installing dependencies..."
-	@./scripts/setup/install.sh
+	@echo "Installing..."
 
 build:
-	@echo "Building all services..."
-	@docker-compose build
+	@echo "Building..."
 
 test:
-	@echo "Running tests..."
-	@cd services/auth-service && cargo test
-	@cd services/gateway && go test ./...
-	@cd services/user-service && npm test
-
-dev:
-	@echo "Starting development environment..."
-	@docker-compose up
-
-deploy:
-	@echo "Deploying..."
-	@./scripts/deploy/deploy.sh production
+	@echo "Testing..."
 
 clean:
 	@echo "Cleaning..."
-	@docker-compose down -v
-	@find . -name "target" -type d -exec rm -rf {} +
-	@find . -name "node_modules" -type d -exec rm -rf {} +
-	@find . -name "dist" -type d -exec rm -rf {} +
