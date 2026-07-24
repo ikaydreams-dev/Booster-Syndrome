@@ -1,0 +1,29 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+
+development:
+  <<: *default
+  database: booster_dev
+  host: localhost
+  port: 5432
+  username: postgres
+  password: postgres
+
+test:
+  <<: *default
+  database: booster_test
+  host: localhost
+  port: 5432
+  username: postgres
+  password: postgres
+
+production:
+  <<: *default
+  database: <%= ENV['DATABASE_NAME'] %>
+  host: <%= ENV['DATABASE_HOST'] %>
+  port: <%= ENV.fetch('DATABASE_PORT', 5432) %>
+  username: <%= ENV['DATABASE_USER'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
