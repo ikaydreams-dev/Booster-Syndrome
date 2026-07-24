@@ -1,44 +1,30 @@
 # Pull Request
 
 ## Description
-Brief description of the changes in this PR.
+Brief description of changes.
 
 ## Type of Change
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Breaking change
 - [ ] Documentation update
-- [ ] Refactoring
-- [ ] Performance improvement
 
-## Services Affected
-- [ ] Auth Service
-- [ ] User Service
-- [ ] Analytics Service
-- [ ] Gateway
-- [ ] Frontend
-- [ ] Infrastructure
-- [ ] Other
+## Changes Made
+- 
+- 
+- 
 
 ## Testing
-- [ ] Unit tests added/updated
-- [ ] Integration tests added/updated
-- [ ] Manual testing performed
+- [ ] Tests added/updated
 - [ ] All tests passing
+- [ ] Manual testing completed
 
 ## Checklist
-- [ ] Code follows project style guidelines
+- [ ] Code follows style guidelines
 - [ ] Self-review completed
-- [ ] Comments added for complex logic
+- [ ] Comments added for complex code
 - [ ] Documentation updated
-- [ ] No breaking changes (or documented)
-- [ ] Security considerations addressed
+- [ ] No new warnings generated
 
 ## Related Issues
-Closes #(issue number)
-
-## Screenshots (if applicable)
-Add screenshots to help explain your changes.
-
-## Additional Notes
-Any additional information about the PR.
+Fixes #(issue number)
