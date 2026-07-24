@@ -4,92 +4,23 @@ services:
   postgres:
     image: postgres:15-alpine
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: booster
+      POSTGRES_PASSWORD: booster
       POSTGRES_DB: booster_db
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  mongodb:
-    image: mongo:7-jammy
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
-
   redis:
     image: redis:7-alpine
     ports:
       - "6379:6379"
 
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
+  mongodb:
+    image: mongo:7
     ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
-
-  gateway:
-    build: ./services/gateway
-    ports:
-      - "8000:8000"
-    environment:
-      - PORT=:8000
-      - AUTH_SERVICE_URL=http://auth-service:8001
-      - USER_SERVICE_URL=http://user-service:8002
-    depends_on:
-      - redis
-
-  auth-service:
-    build: ./services/auth-service
-    ports:
-      - "8001:8001"
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/auth_db
-      - JWT_SECRET=secret-key
-    depends_on:
-      - postgres
-
-  user-service:
-    build: ./services/user-service
-    ports:
-      - "8002:8002"
-    environment:
-      - MONGODB_URI=mongodb://mongodb:27017/user_db
-    depends_on:
-      - mongodb
-
-  analytics-service:
-    build: ./services/analytics-service
-    ports:
-      - "8003:8003"
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/analytics_db
-    depends_on:
-      - postgres
-
-  notification-service:
-    build: ./services/notification-service
-    ports:
-      - "8004:8004"
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/notifications_db
-      - REDIS_URL=redis://redis:6379
-    depends_on:
-      - postgres
-      - redis
-
-  frontend:
-    build: ./web/frontend
-    ports:
-      - "3000:3000"
-    environment:
-      - VITE_API_URL=http://localhost:8000
+      - "27017:27017"
 
 volumes:
   postgres_data:
-  mongo_data:
