@@ -1,0 +1,55 @@
+[package]
+name = "booster-syndrome"
+version = "1.0.0"
+edition = "2021"
+authors = ["ikaydreams108@gmail.com"]
+license = "MIT"
+repository = "https://github.com/ikaydreams-dev/Booster-Syndrome"
+
+[dependencies]
+tokio = { version = "1.32", features = ["full"] }
+async-trait = "0.1"
+futures = "0.3"
+
+# Web frameworks
+actix-web = "4.4"
+axum = "0.6"
+warp = "0.3"
+
+# Database
+sqlx = { version = "0.7", features = ["runtime-tokio-native-tls", "postgres", "mysql", "sqlite"] }
+diesel = { version = "2.1", features = ["postgres", "mysql", "sqlite"] }
+redis = "0.23"
+mongodb = "2.6"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.7"
+
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = "0.3"
+log = "0.4"
+
+# Crypto
+bcrypt = "0.15"
+jsonwebtoken = "9.1"
+uuid = { version = "1.4", features = ["v4", "serde"] }
+rand = "0.8"
+
+# HTTP client
+reqwest = { version = "0.11", features = ["json"] }
+
+# Testing
+[dev-dependencies]
+mockall = "0.11"
+criterion = "0.5"
+
+[[bin]]
+name = "booster"
+path = "src/main.rs"
