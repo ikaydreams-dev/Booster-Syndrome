@@ -1,0 +1,25 @@
+development:
+  level: debug
+  format: text
+  output: stdout
+  include_timestamp: true
+  include_caller: true
+
+test:
+  level: error
+  format: json
+  output: file
+  file_path: log/test.log
+  include_timestamp: true
+  include_caller: false
+
+production:
+  level: info
+  format: json
+  output: stdout
+  include_timestamp: true
+  include_caller: false
+  max_size: 100MB
+  max_backups: 10
+  max_age: 30
+  compress: true
