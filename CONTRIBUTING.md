@@ -1,57 +1,25 @@
 # Contributing to Booster Syndrome
 
-Thank you for your interest in contributing to Booster Syndrome!
+Thank you for your interest in contributing!
 
-## Development Setup
+## How to Contribute
 
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/Booster-Syndrome.git`
-3. Create a branch: `git checkout -b feature/your-feature-name`
-4. Make your changes
-5. Run tests: `make test`
-6. Commit: `git commit -m "Add your feature"`
-7. Push: `git push origin feature/your-feature-name`
-8. Create a Pull Request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## Code Style
+## Code Standards
 
-### Rust
-- Follow Rust standard conventions
-- Run `cargo fmt` before committing
-- Ensure `cargo clippy` passes
+- Follow the language-specific style guides
+- Write tests for new features
+- Keep commits focused and descriptive
+- Update documentation as needed
 
-### Go
-- Use `gofmt` for formatting
-- Follow Go best practices
-- Run `go vet` before committing
+## Testing
 
-### TypeScript/JavaScript
-- Use ESLint configuration
-- Follow Airbnb style guide
-- Run `npm run lint`
-
-### Python
-- Follow PEP 8
-- Use Black for formatting
-- Run `flake8` for linting
-
-## Commit Messages
-
-Use conventional commits format:
-- `feat:` for new features
-- `fix:` for bug fixes
-- `docs:` for documentation
-- `refactor:` for refactoring
-- `test:` for tests
-- `chore:` for maintenance
-
-## Pull Request Process
-
-1. Update README.md with details of changes if needed
-2. Ensure all tests pass
-3. Update documentation
-4. Request review from maintainers
-
-## Questions?
-
-Open an issue for discussion!
+Run tests before submitting:
+```bash
+make test
+```
