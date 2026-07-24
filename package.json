@@ -1,0 +1,35 @@
+{
+  "name": "booster-syndrome",
+  "version": "1.0.0",
+  "description": "Multi-language service architecture for maximum productivity",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Running tests...\" && exit 0",
+    "build": "echo \"Building project...\"",
+    "start": "echo \"Starting services...\"",
+    "dev": "echo \"Starting development mode...\"",
+    "lint": "echo \"Linting code...\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ikaydreams-dev/Booster-Syndrome.git"
+  },
+  "keywords": [
+    "microservices",
+    "polyglot",
+    "architecture",
+    "ruby",
+    "python",
+    "go",
+    "rust",
+    "java",
+    "cpp"
+  ],
+  "author": "ikaydreams108@gmail.com",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0"
+  },
+  "dependencies": {}
+}
