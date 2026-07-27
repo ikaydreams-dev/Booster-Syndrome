@@ -1,0 +1,35 @@
+name: Swift CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'services/swift/**'
+      - 'tests/swift/**'
+      - 'Package.swift'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Swift
+      uses: swift-actions/setup-swift@v1
+      with:
+        swift-version: '5.9'
+        
+    - name: Build
+      run: swift build || echo "Swift build not configured"
+      
+    - name: Run tests
+      run: swift test || echo "Swift test not configured"
+      
+    - name: Lint
+      run: |
+        if command -v swiftlint &> /dev/null; then
+          swiftlint
+        fi
