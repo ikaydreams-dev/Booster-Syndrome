@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: booster-config
+data:
+  app.config: |
+    {
+      "app_name": "Booster Syndrome",
+      "api_version": "v1",
+      "features": {
+        "enable_cache": true,
+        "enable_rate_limit": true,
+        "enable_metrics": true
+      },
+      "pagination": {
+        "default_page_size": 20,
+        "max_page_size": 100
+      },
+      "rate_limit": {
+        "max_requests": 100,
+        "window_seconds": 900
+      }
+    }
+  
+  logging.config: |
+    level: info
+    format: json
+    output: stdout
+    include_timestamp: true
+    
+  database.config: |
+    pool_size: 10
+    timeout: 5000
+    retry_attempts: 3
+    retry_delay: 1000
