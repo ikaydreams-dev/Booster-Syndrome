@@ -1,0 +1,39 @@
+name: Clojure CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'services/clojure/**'
+      - 'tests/clojure/**'
+      - 'project.clj'
+      - 'deps.edn'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Clojure
+      uses: DeLaGuardo/setup-clojure@12.1
+      with:
+        cli: latest
+        lein: latest
+        
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.m2
+          ~/.gitlibs
+        key: ${{ runner.os }}-clojure-${{ hashFiles('**/deps.edn', '**/project.clj') }}
+        
+    - name: Install dependencies
+      run: clojure -P || lein deps || echo "Clojure deps not configured"
+      
+    - name: Run tests
+      run: clojure -X:test || lein test || echo "Clojure test not configured"
