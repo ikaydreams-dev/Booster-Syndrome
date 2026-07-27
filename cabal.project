@@ -1,0 +1,19 @@
+packages: services/haskell/*.cabal
+
+-- Compiler options
+with-compiler: ghc-9.4.5
+
+-- Optimization
+optimization: 2
+
+-- Documentation
+documentation: True
+
+-- Tests
+tests: True
+
+-- Benchmarks
+benchmarks: False
+
+-- Constraints
+constraints: base >= 4.17 && < 5
