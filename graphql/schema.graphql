@@ -1,0 +1,163 @@
+type Query {
+  user(id: ID!): User
+  users(page: Int, perPage: Int): UserConnection!
+  post(id: ID!): Post
+  posts(published: Boolean, page: Int, perPage: Int): PostConnection!
+  comments(postId: ID!, page: Int, perPage: Int): CommentConnection!
+  health: Health!
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): UserPayload!
+  updateUser(id: ID!, input: UpdateUserInput!): UserPayload!
+  deleteUser(id: ID!): DeletePayload!
+  
+  createPost(input: CreatePostInput!): PostPayload!
+  updatePost(id: ID!, input: UpdatePostInput!): PostPayload!
+  publishPost(id: ID!): PostPayload!
+  deletePost(id: ID!): DeletePayload!
+  
+  createComment(input: CreateCommentInput!): CommentPayload!
+  updateComment(id: ID!, input: UpdateCommentInput!): CommentPayload!
+  deleteComment(id: ID!): DeletePayload!
+}
+
+type Subscription {
+  postCreated: Post!
+  commentAdded(postId: ID!): Comment!
+}
+
+type User {
+  id: ID!
+  email: String!
+  posts(page: Int, perPage: Int): PostConnection!
+  comments(page: Int, perPage: Int): CommentConnection!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Post {
+  id: ID!
+  title: String!
+  content: String!
+  published: Boolean!
+  user: User!
+  comments(page: Int, perPage: Int): CommentConnection!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Comment {
+  id: ID!
+  content: String!
+  post: Post!
+  user: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UserConnection {
+  edges: [UserEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type UserEdge {
+  node: User!
+  cursor: String!
+}
+
+type PostConnection {
+  edges: [PostEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type PostEdge {
+  node: Post!
+  cursor: String!
+}
+
+type CommentConnection {
+  edges: [CommentEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type CommentEdge {
+  node: Comment!
+  cursor: String!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Health {
+  status: String!
+  timestamp: DateTime!
+  service: String!
+  version: String!
+  uptime: Int!
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  email: String
+  password: String
+}
+
+input CreatePostInput {
+  title: String!
+  content: String!
+  userId: ID!
+}
+
+input UpdatePostInput {
+  title: String
+  content: String
+}
+
+input CreateCommentInput {
+  content: String!
+  postId: ID!
+  userId: ID!
+}
+
+input UpdateCommentInput {
+  content: String!
+}
+
+type UserPayload {
+  user: User
+  errors: [Error!]
+}
+
+type PostPayload {
+  post: Post
+  errors: [Error!]
+}
+
+type CommentPayload {
+  comment: Comment
+  errors: [Error!]
+}
+
+type DeletePayload {
+  success: Boolean!
+  errors: [Error!]
+}
+
+type Error {
+  field: String
+  message: String!
+}
+
+scalar DateTime
