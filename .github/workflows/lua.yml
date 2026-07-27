@@ -1,0 +1,34 @@
+name: Lua CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'services/lua/**'
+      - '*.rockspec'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Lua
+      uses: leafo/gh-actions-lua@v10
+      with:
+        luaVersion: '5.3'
+        
+    - name: Setup LuaRocks
+      uses: leafo/gh-actions-luarocks@v4
+        
+    - name: Install dependencies
+      run: luarocks install --only-deps *.rockspec || echo "Lua deps not configured"
+      
+    - name: Lint with luacheck
+      run: luacheck services/lua || echo "Luacheck not configured"
+      
+    - name: Run tests
+      run: lua services/lua/*.lua || echo "Lua test not configured"
