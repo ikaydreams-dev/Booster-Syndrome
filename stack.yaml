@@ -1,0 +1,10 @@
+resolver: lts-21.17
+
+packages:
+  - services/haskell
+
+extra-deps: []
+
+flags: {}
+
+extra-package-dbs: []
