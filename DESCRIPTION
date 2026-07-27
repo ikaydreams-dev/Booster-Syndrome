@@ -1,0 +1,22 @@
+Package: booster
+Type: Package
+Title: Booster Syndrome Multi-Language Analytics
+Version: 1.0.0
+Author: Booster Team
+Maintainer: Booster Team <team@booster.com>
+Description: Statistical analysis and data visualization utilities
+    for the Booster Syndrome microservices platform.
+License: MIT
+Encoding: UTF-8
+Depends: 
+    R (>= 4.2.0)
+Imports:
+    ggplot2,
+    dplyr,
+    tidyr,
+    readr
+Suggests:
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
