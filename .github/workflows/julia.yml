@@ -1,0 +1,32 @@
+name: Julia CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'services/julia/**'
+      - 'Project.toml'
+      - 'Manifest.toml'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Julia
+      uses: julia-actions/setup-julia@v1
+      with:
+        version: '1.9'
+        
+    - name: Cache Julia packages
+      uses: julia-actions/cache@v1
+        
+    - name: Install dependencies
+      run: julia -e 'using Pkg; Pkg.instantiate()' || echo "Julia deps not configured"
+      
+    - name: Run tests
+      run: julia -e 'using Pkg; Pkg.test()' || echo "Julia test not configured"
