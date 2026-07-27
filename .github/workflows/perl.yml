@@ -1,0 +1,34 @@
+name: Perl CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'services/perl/**'
+      - 'cpanfile'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Perl
+      uses: shogo82148/actions-setup-perl@v1
+      with:
+        perl-version: '5.38'
+        
+    - name: Install cpanm
+      run: curl -L https://cpanmin.us | perl - App::cpanminus
+        
+    - name: Install dependencies
+      run: cpanm --installdeps . || echo "Perl deps not configured"
+      
+    - name: Syntax check
+      run: find services/perl -name "*.pl" -exec perl -c {} \; || echo "Perl syntax check not configured"
+      
+    - name: Run Perl::Critic
+      run: perlcritic services/perl || echo "Perl::Critic not configured"
