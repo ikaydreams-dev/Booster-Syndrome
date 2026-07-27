@@ -1,0 +1,41 @@
+name: Scala CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'services/scala/**'
+      - 'tests/scala/**'
+      - 'build.sbt'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Scala
+      uses: coursier/setup-action@v1
+      with:
+        jvm: temurin:17
+        apps: sbt
+        
+    - name: Cache SBT
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.ivy2/cache
+          ~/.sbt
+        key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt') }}
+        
+    - name: Compile
+      run: sbt compile
+      
+    - name: Run tests
+      run: sbt test
+      
+    - name: Check formatting
+      run: sbt scalafmtCheck
