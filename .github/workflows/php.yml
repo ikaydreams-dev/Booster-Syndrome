@@ -1,0 +1,38 @@
+name: PHP CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'services/php/**'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: mbstring, xml, curl, json
+        coverage: xdebug
+        
+    - name: Validate PHP syntax
+      run: find services/php -name "*.php" -print0 | xargs -0 -n1 php -l
+      
+    - name: Install Composer dependencies
+      run: |
+        if [ -f composer.json ]; then
+          composer install --prefer-dist --no-progress
+        fi
+        
+    - name: Run PHPStan
+      run: |
+        if command -v phpstan &> /dev/null; then
+          phpstan analyse services/php
+        fi
