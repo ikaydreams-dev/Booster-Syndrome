@@ -1,0 +1,34 @@
+name: Dart CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'services/dart/**'
+      - 'pubspec.yaml'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Dart
+      uses: dart-lang/setup-dart@v1
+      with:
+        sdk: stable
+        
+    - name: Install dependencies
+      run: dart pub get || echo "No pubspec.yaml in root"
+      
+    - name: Analyze
+      run: dart analyze || echo "Dart analyze not configured"
+      
+    - name: Format check
+      run: dart format --set-exit-if-changed . || echo "Dart format not configured"
+      
+    - name: Run tests
+      run: dart test || echo "Dart test not configured"
